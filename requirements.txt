@@ -1,1 +1,5 @@
 genanki==0.13.0
+elevenlabs>=0.2.24
+replicate>=1.0.7
+python-dotenv>=1.0.0
+tqdm>=4.66.0

@@ -11,16 +11,16 @@ from tqdm import tqdm
 # Para ElevenLabs
 from elevenlabs import generate, set_api_key
 
-# Para Hume.ai
-from hume import HumeVoiceClient
+# Para Replicate (Chatterbox)
+import replicate
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 
 # Configuración
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-HUMEAI_API_KEY = os.getenv("HUMEAI_API_KEY")
-AUDIO_PROVIDER = "elevenlabs"  # Opciones: "elevenlabs" o "humeai"
+REPLICATE_API_TOKEN = os.getenv("REPLICATE_API_TOKEN")
+AUDIO_PROVIDER = "replicate"  # Opciones: "elevenlabs" o "replicate"
 SOUNDS_DIR = "sounds"
 DATA_FILE = "data.json"
 
@@ -28,10 +28,9 @@ DATA_FILE = "data.json"
 if ELEVENLABS_API_KEY:
     set_api_key(ELEVENLABS_API_KEY)
 
-# Inicializar el cliente de Hume.ai si la API key está disponible
-hume_client = None
-if HUMEAI_API_KEY:
-    hume_client = HumeVoiceClient(api_key=HUMEAI_API_KEY)
+# Verificar que la API key de Replicate esté disponible
+if REPLICATE_API_TOKEN:
+    os.environ["REPLICATE_API_TOKEN"] = REPLICATE_API_TOKEN
 
 # Asegurarse de que el directorio de sonidos exista
 if not os.path.exists(SOUNDS_DIR):
@@ -76,37 +75,39 @@ def generate_audio_elevenlabs(text, output_file):
         print(f"Error al generar audio con ElevenLabs: {str(e)}")
         return False
 
-def generate_audio_humeai(text, output_file):
-    """Genera audio usando el SDK de Hume.ai"""
+def generate_audio_replicate(text, output_file):
+    """Genera audio usando la API de Replicate con el modelo Chatterbox"""
     try:
-        if hume_client is None:
-            print("Error: Cliente de Hume.ai no inicializado. Verifica tu API key.")
+        if not REPLICATE_API_TOKEN:
+            print("Error: API token de Replicate no configurado")
             return False
         
-        # Generar audio usando el SDK de Hume.ai
-        # La API actual de Hume.ai puede ser diferente, esta es una implementación básica
-        # basada en la documentación actual
-        audio_bytes = hume_client.synthesize_speech(
-            text=text,
-            voice_id="female_a"  # Usar una voz predeterminada, ajustar según disponibilidad
+        # Generar audio usando Replicate
+        input_data = {
+            "prompt": text
+        }
+        
+        # Ejecutar el modelo Chatterbox
+        output = replicate.run(
+            "resemble-ai/chatterbox",
+            input=input_data
         )
         
         # Guardar el audio en un archivo
-        with open(output_file, "wb") as f:
-            f.write(audio_bytes)
+        with open(output_file, "wb") as file:
+            file.write(output.read())
         
-        print(f"Audio generado correctamente con Hume.ai: {output_file}")
         return True
     except Exception as e:
-        print(f"Error al generar audio con Hume.ai: {str(e)}")
+        print(f"Error al generar audio con Replicate: {str(e)}")
         return False
 
-def generate_audio(text, output_file, provider):
+def generate_audio(text, output_file, provider="elevenlabs"):
     """Genera audio usando el proveedor especificado"""
     if provider == "elevenlabs":
         return generate_audio_elevenlabs(text, output_file)
-    elif provider == "humeai":
-        return generate_audio_humeai(text, output_file)
+    elif provider == "replicate":
+        return generate_audio_replicate(text, output_file)
     else:
         print(f"Proveedor no válido: {provider}")
         return False
@@ -118,8 +119,8 @@ def process_phrases(data, audio_provider):
         print("Error: La clave API de ElevenLabs no está configurada. Por favor, configúrela en el archivo .env")
         return
     
-    if audio_provider == "humeai" and not HUMEAI_API_KEY:
-        print("Error: La clave API de Hume.ai no está configurada. Por favor, configúrela en el archivo .env")
+    if audio_provider == "replicate" and not REPLICATE_API_TOKEN:
+        print("Error: La clave API de Replicate no está configurada. Por favor, configúrela en el archivo .env")
         return
     
     # Variable para alternar entre proveedores si se desea
