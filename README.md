@@ -70,7 +70,7 @@ Antes de ejecutar los scripts, necesitas configurar tus claves de API.
 cp .env.example .env
 ```
 
-2.  Abre el archivo `.env` y añade tus claves de API:
+2.  Crea el archivo `.env` y añade tus claves de API:
 
 ```dotenv
 # Claves API para los servicios de generación de voz
