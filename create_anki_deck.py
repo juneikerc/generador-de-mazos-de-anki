@@ -27,9 +27,9 @@ def sanitize_filename(name):
     return sanitized + ".apkg"
 
 # Configurar el parser de argumentos
-parser = argparse.ArgumentParser(description='Crear un mazo de Anki con phrasal verbs y audio.')
-parser.add_argument('--name', '-n', type=str, default='Phrasal Verbs - Español/Inglés',
-                    help='Nombre del mazo de Anki (por defecto: "Phrasal Verbs - Español/Inglés")')
+parser = argparse.ArgumentParser(description='Crear un mazo de Anki')
+parser.add_argument('--name', '-n', type=str, default='frases  - Inglés/Español',
+                    help='Nombre del mazo de Anki (por defecto: "Anki Deck - Inglés/Español")')
 parser.add_argument('--output', '-o', type=str, 
                     help='Nombre del archivo de salida (opcional, por defecto se genera a partir del nombre del mazo)')
 parser.add_argument('--data', '-d', type=str, default='data.json',
@@ -126,7 +126,7 @@ css = '''
 # Definir el modelo de la tarjeta
 model = genanki.Model(
     model_id,
-    'Phrasal Verbs Model',
+    'Anki Deck Model',
     fields=[
         {'name': 'Phrase'},
         {'name': 'Translation'},
@@ -192,7 +192,11 @@ media_files = []
 # Añadir las notas al mazo
 for item in data:
     phrase = item['phrase']
+    translation = item['translation']
+    
+    # Procesar y destacar el texto entre asteriscos tanto en la frase como en la traducción
     processed_phrase = process_phrase(phrase)
+    processed_translation = process_phrase(translation)
     
     # Generar el nombre del archivo de audio
     audio_filename = get_audio_filename(phrase)
@@ -208,7 +212,7 @@ for item in data:
     
     note = genanki.Note(
         model=model,
-        fields=[processed_phrase, item['translation'], audio_tag]
+        fields=[processed_phrase, processed_translation, audio_tag]
     )
     deck.add_note(note)
 

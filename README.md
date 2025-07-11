@@ -11,9 +11,9 @@ Con estos scripts, puedes convertir una lista de frases en un archivo JSON en un
   - **ElevenLabs**: Voces de alta calidad y realismo.
   - **Replicate (Chatterbox)**: Una alternativa de código abierto.
 - **Diseño de Tarjetas Moderno**: Las tarjetas tienen un estilo CSS moderno, limpio y responsivo.
-- **Personalización**: 
+- **Personalización**:
   - Nombres de mazo y archivos de salida personalizables a través de la línea de comandos.
-  - Resaltado automático de phrasal verbs o palabras clave en las tarjetas.
+  - Resaltado automático de palabras clave en las tarjetas (usando \*\*\*\*).
 - **Estimación de Costos**: Incluye un script para contar caracteres y estimar el uso de las APIs de TTS.
 - **Eficiencia**: Evita generar archivos de audio que ya existen, ahorrando tiempo y costos de API.
 
@@ -144,7 +144,6 @@ python count_characters.py
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-
 
 Este proyecto crea un mazo de Anki con tarjetas de estudio de phrasal verbs en inglés con sus traducciones al español, usando un diseño moderno y creativo.
 
