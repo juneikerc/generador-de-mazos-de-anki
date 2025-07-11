@@ -1,8 +1,16 @@
-# Generador de Mazos de Anki con Audio TTS
+# Generador de Mazos de Anki con Audio TTS inglés/español
 
 Este proyecto es una suite de herramientas en Python para crear mazos de Anki personalizados para el aprendizaje de idiomas, con un enfoque en la generación de audio a través de servicios de Texto a Voz (TTS).
 
 Con estos scripts, puedes convertir una lista de frases en un archivo JSON en un mazo de Anki profesional, con audio de alta calidad para cada tarjeta, un diseño moderno y la capacidad de personalizar el contenido y la apariencia.
+
+---
+
+**¿Necesitas un mazo de Anki personalizado?**
+
+Si quieres un mazo de Anki hecho a medida sobre cualquier tema (idiomas, ciencias, historia, etc.), no dudes en contactarme. Visita [juneikerc.com](https://juneikerc.com) para más información.
+
+---
 
 ## ✨ Características
 
@@ -42,8 +50,8 @@ Sigue estos pasos para poner en marcha el proyecto.
 
 ```bash
 # 1. Clona el repositorio
-git clone https://github.com/tu-usuario/tu-repositorio.git
-cd tu-repositorio
+git clone https://github.com/juneikerc/generador-de-mazos-de-anki.git
+cd generador-de-mazos-de-anki
 
 # 2. Crea y activa un entorno virtual (recomendado)
 python -m venv venv
