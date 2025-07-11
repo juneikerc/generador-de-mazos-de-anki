@@ -1,4 +1,113 @@
-# Generador de Mazos de Anki con Audio TTS inglés/español
+# Generador de Mazos de Anki con Audio TTS
+
+Este proyecto es una suite de herramientas en Python para crear mazos de Anki personalizados para el aprendizaje de idiomas, con un enfoque en la generación de audio a través de servicios de Texto a Voz (TTS).
+
+Con estos scripts, puedes convertir una lista de frases en un archivo JSON en un mazo de Anki profesional, con audio de alta calidad para cada tarjeta, un diseño moderno y la capacidad de personalizar el contenido y la apariencia.
+
+---
+
+**¿Necesitas un mazo de Anki personalizado?**
+
+Si quieres un mazo de Anki hecho a medida sobre cualquier tema (idiomas, ciencias, historia, etc.), no dudes en contactarme. Visita [juneikerc.com](https://juneikerc.com) para más información.
+
+---
+
+## 🌟 Ejemplo del Resultado Final
+
+Aquí puedes ver una muestra de cómo se ven las tarjetas y el mazo generado por el script, además de escuchar un ejemplo del audio.
+
+### Presentación del Mazo
+![Presentación del Mazo](public/script-anki-example-1.png)
+
+### Ejemplo de Tarjeta (Frente y Reverso)
+![Ejemplo de Tarjeta](public/script-anki-example-2.png)
+
+### 🔊 Ejemplo de Audio
+Escucha un ejemplo del audio generado para una de las tarjetas:
+
+[🎵 Escuchar audio de ejemplo](public/Dad,%20can't%20you%20just%20skip%20ahead%20to%20the%20part%20where%20you%20meet%20Mom_28741d2c.mp3)
+
+---
+
+## ✨ Características
+
+- **Creación de Mazos de Anki**: Genera archivos `.apkg` listos para importar en Anki.
+- **Integración de Audio TTS**: Soporta múltiples proveedores de TTS para generar audio automáticamente:
+  - **ElevenLabs**: Voces de alta calidad y realismo.
+  - **Replicate (Chatterbox)**: Una alternativa de código abierto.
+- **Diseño de Tarjetas Moderno**: Las tarjetas tienen un estilo CSS moderno, limpio y responsivo.
+- **Personalización**:
+  - Nombres de mazo y archivos de salida personalizables a través de la línea de comandos.
+  - Resaltado automático de palabras clave en las tarjetas (usando `****`).
+- **Estimación de Costos**: Incluye un script para contar caracteres y estimar el uso de las APIs de TTS.
+- **Eficiencia**: Evita generar archivos de audio que ya existen, ahorrando tiempo y costos de API.
+
+## 🚀 Guía de Inicio Rápido
+
+Sigue estos pasos para poner en marcha el proyecto.
+
+### 1. Prerrequisitos
+
+- Python 3.7 o superior
+- Una cuenta en [ElevenLabs](https://elevenlabs.io/) o [Replicate](https://replicate.com/) para obtener tus claves de API.
+
+### 2. Instalación
+
+```bash
+# 1. Clona el repositorio
+git clone https://github.com/tu-usuario/tu-repositorio.git
+cd tu-repositorio
+
+# 2. Crea y activa un entorno virtual (recomendado)
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# 3. Instala las dependencias
+pip install -r requirements.txt
+```
+
+### 3. Configuración
+
+Antes de ejecutar los scripts, necesitas configurar tus claves de API.
+
+```bash
+# 1. Copia el archivo de ejemplo .env.example a .env
+cp .env.example .env
+```
+
+2.  Abre el archivo `.env` y añade tus claves de API:
+
+```dotenv
+# Claves API para los servicios de generación de voz
+ELEVENLABS_API_KEY=tu_clave_de_elevenlabs
+REPLICATE_API_TOKEN=tu_token_de_replicate
+```
+
+### 4. Preparar los Datos
+
+El script utiliza un archivo `data.json` para obtener las frases. Puedes usar `data.example.json` como plantilla.
+
+### 5. Ejecutar los Scripts
+
+Ahora estás listo para generar tu mazo.
+
+**Paso 1: Generar los Audios**
+
+```bash
+python generate_audio.py
+```
+
+**Paso 2: Crear el Mazo de Anki**
+
+```bash
+python create_anki_deck.py -n "Mi Mazo Personalizado"
+```
+
+¡Y listo! Ahora puedes importar el archivo `.apkg` generado en tu aplicación de Anki.
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
 
 Este proyecto es una suite de herramientas en Python para crear mazos de Anki personalizados para el aprendizaje de idiomas, con un enfoque en la generación de audio a través de servicios de Texto a Voz (TTS).
 

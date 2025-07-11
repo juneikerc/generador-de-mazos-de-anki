@@ -14,5 +14,3 @@ sounds/
 /__pycache__
 /.env
 /sounds
-*.mp3
-*.wav
