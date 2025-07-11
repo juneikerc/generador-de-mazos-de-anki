@@ -1,0 +1,5 @@
+source venv/bin/activate
+python generate_audio.py
+
+
+python create_anki_deck.py

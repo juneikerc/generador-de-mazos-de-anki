@@ -5,9 +5,43 @@ import random
 import os
 import re
 import hashlib
+import argparse
+
+# Función para generar un nombre de archivo válido a partir del nombre del mazo
+def sanitize_filename(name):
+    # Reemplazar caracteres no permitidos con guiones bajos
+    sanitized = re.sub(r'[\\/*?:"<>|]', "_", name)
+    # Reemplazar espacios con guiones bajos
+    sanitized = re.sub(r'\s+', "_", sanitized)
+    # Reemplazar barras con guiones
+    sanitized = re.sub(r'[/\\]', "-", sanitized)
+    # Eliminar caracteres no ASCII
+    sanitized = re.sub(r'[^\x00-\x7F]+', "", sanitized)
+    # Eliminar guiones bajos múltiples
+    sanitized = re.sub(r'_+', "_", sanitized)
+    # Eliminar guiones al principio y al final
+    sanitized = sanitized.strip("_-")
+    # Si el nombre está vacío después de la limpieza, usar un nombre por defecto
+    if not sanitized:
+        sanitized = "anki_deck"
+    return sanitized + ".apkg"
+
+# Configurar el parser de argumentos
+parser = argparse.ArgumentParser(description='Crear un mazo de Anki con phrasal verbs y audio.')
+parser.add_argument('--name', '-n', type=str, default='Phrasal Verbs - Español/Inglés',
+                    help='Nombre del mazo de Anki (por defecto: "Phrasal Verbs - Español/Inglés")')
+parser.add_argument('--output', '-o', type=str, 
+                    help='Nombre del archivo de salida (opcional, por defecto se genera a partir del nombre del mazo)')
+parser.add_argument('--data', '-d', type=str, default='data.json',
+                    help='Archivo JSON con los datos (por defecto: "data.json")')
+parser.add_argument('--sounds-dir', '-s', type=str, default='sounds',
+                    help='Directorio con los archivos de audio (por defecto: "sounds")')
+
+# Parsear los argumentos
+args = parser.parse_args()
 
 # Cargar los datos del archivo JSON
-with open('data.json', 'r', encoding='utf-8') as f:
+with open(args.data, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Crear un ID de modelo aleatorio (necesario para genanki)
@@ -111,10 +145,10 @@ model = genanki.Model(
 # Crear un ID de mazo aleatorio
 deck_id = random.randrange(1 << 30, 1 << 31)
 
-# Crear el mazo
+# Crear el mazo con el nombre proporcionado
 deck = genanki.Deck(
     deck_id,
-    'Phrasal Verbs - Español/Inglés'
+    args.name
 )
 
 # Función para generar el nombre del archivo de audio (igual que en generate_audio.py)
@@ -146,7 +180,7 @@ def process_phrase(phrase):
     return phrase
 
 # Directorio donde se encuentran los archivos de audio
-SOUNDS_DIR = "sounds"
+SOUNDS_DIR = args.sounds_dir
 
 # Verificar que el directorio de sonidos exista
 if not os.path.exists(SOUNDS_DIR):
@@ -179,7 +213,12 @@ for item in data:
     deck.add_note(note)
 
 # Crear el paquete de Anki con los archivos de medios
-output_file = 'phrasal_verbs_deck.apkg'
+if args.output:
+    output_file = args.output
+else:
+    # Generar el nombre del archivo a partir del nombre del mazo
+    output_file = sanitize_filename(args.name)
+
 genanki.Package(deck, media_files=media_files).write_to_file(output_file)
 
 print(f"¡Mazo de Anki creado exitosamente! Archivo guardado como: {output_file}")
