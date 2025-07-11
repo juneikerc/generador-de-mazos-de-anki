@@ -1,4 +1,17 @@
-/venv
+# Entorno virtual y caché de Python
+/venv/
+__pycache__/
+
+# Archivos de configuración y secretos
+.env
+
+# Datos y archivos generados por el usuario
+data.json
+*.apkg
+
+# Directorio de medios generados
+sounds/
+
 /__pycache__
 /.env
 /sounds
